@@ -137,7 +137,7 @@ def validate_fields():
         root.destroy() # Close the registration window
         import login  # Navigate to the login window
 
-# Function to add student details to the database
+# Function to add patient  details to the database
 def add_student():
     # Retrieve data from entry widgets
     name = entry_name.get()
@@ -159,7 +159,7 @@ def add_student():
     conn = sqlite3.connect('Form.db')
     cursor = conn.cursor()
 
-    # Create student details table if not exists
+    # Create patient details table if not exists
     cursor.execute("""CREATE TABLE IF NOT EXISTS students(
                ID INTEGER PRIMARY KEY AUTOINCREMENT,
                name TEXT,
@@ -177,25 +177,25 @@ def add_student():
                blood_group TEXT
     )""")
 
-    # Insert student details into students table
-    cursor.execute("INSERT INTO students (name, father_name, mother_name, phone_number, email, gender, dob_year, dob_month, dob_date, address, course, emergency_contact, blood_group) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    # Insert patient details into patient table
+    cursor.execute("INSERT INTO patient (name, father_name, mother_name, phone_number, email, gender, dob_year, dob_month, dob_date, address, course, emergency_contact, blood_group) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                    (name, father_name, mother_name, phone_number, email, gender, dob_year, dob_month, dob_date, address, course, emergency_contact, blood_group))
     conn.commit()
     conn.close()
     
 
 
-# Function to retrieve and display student information
+# Function to retrieve and display patient information
 def retrieve_info(student_id=None):
     # Connect to the database
     conn = sqlite3.connect('Form.db')
     cursor = conn.cursor()
 
-    # If student_id is provided, retrieve information for that specific student
+    # If patient id is provided, retrieve information for that specific patient
     if student_id:
         cursor.execute("SELECT * FROM students WHERE ID=?", (student_id,))
     else:
-        # If student_id is not provided, retrieve information for all students
+        # If pateint id is not provided, retrieve information for all students
         cursor.execute("SELECT * FROM students")
     
     students = cursor.fetchall()
@@ -203,8 +203,8 @@ def retrieve_info(student_id=None):
     # Close the connection
     conn.close()
 
-    # Display retrieved student details
-    info_message = "Registered Students:\n\n"
+    # Display retrieved pateint details
+    info_message = "Registered patient:\n\n"
     for student in students:
         info_message += f"Name: {student[1]}\n"
         info_message += f"Father's Name: {student[2]}\n"
@@ -217,15 +217,15 @@ def retrieve_info(student_id=None):
         info_message += f"Course: {student[9]}\n"
         info_message += f"Emergency Contact: {student[10]}\n"
         info_message += f"Blood group: {student[11]}\n\n"
-    messagebox.showinfo("Registered Students", info_message)
+    messagebox.showinfo("Registered Pateint", info_message)
    
-# Function to delete all student records
+# Function to delete all pateint records
 def delete_all_students():
     # Connect to the database
     conn = sqlite3.connect('Form.db')
     cursor = conn.cursor()
 
-    # Execute the DELETE statement to remove all records from the students table
+    # Execute the DELETE statement to remove all records from the pateint table
     cursor.execute("DELETE FROM students")
 
     # Commit the transaction and close the connection
